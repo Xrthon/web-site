@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+/*
+Crées tes propres composants Tailwind réutilisables.
+
+*/
+@layer components {
+  .form-input {
+    @apply w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-black focus:outline-none;
+  }
+
+  .form-label {
+    @apply mb-2 block text-sm font-medium text-gray-700;
+  }
+
+  .btn-primary {
+    @apply rounded-lg bg-black px-4 py-2 font-medium text-white hover:bg-gray-800;
+  }
+}

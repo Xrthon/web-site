@@ -1,0 +1,12 @@
+<div class="space-y-12"> 
+
+    <h1>Dashboard</h1>
+
+    <p> 
+          <!-- l'utilisation de Current.user-->
+        Bienvenu, <%=Current.user.email_address %>!
+    </p>
+
+    <!-- donc on dit que le bouton appel le /logout appelle la methode: delete du SessionsController --> 
+    <%= button_to "logout", session_path, method: :delete %>
+</div>

@@ -1,0 +1,158 @@
+<div class="mx-auto max-w-4xl">
+
+  <div class="overflow-hidden rounded-3xl bg-white shadow">
+
+    <!-- HEADER -->
+    <div class="h-40 bg-gradient-to-r <%= @profile.header_gradient %>"></div>
+
+    <!-- PROFILE CONTENT -->
+    <div class="relative px-8 pb-8">
+
+      <!-- AVATAR -->
+      <div class="-mt-16 flex items-end justify-between">
+
+        <div class="flex items-end gap-6">
+
+          <div class="h-32 w-32 overflow-hidden rounded-2xl border-4 border-white bg-gray-200 shadow">
+            <% if @profile.avatar_url.present? %>
+              <img
+                src="<%= @profile.avatar_url %>"
+                alt="Avatar"
+                class="h-full w-full object-cover"
+              >
+            <% else %>
+              <div class="flex h-full w-full items-center justify-center text-4xl font-bold text-gray-500">
+                <%= @profile.first_name&.first %><%= @profile.last_name&.first %>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="pb-2">
+            <h1 class="text-3xl font-bold text-gray-900">
+              <%= @profile.display_name.presence || "#{@profile.first_name} #{@profile.last_name}" %>
+            </h1>
+
+          <% unless @profile.city.empty? %>
+            <p class="mt-1 text-gray-500">
+              <%= @profile.city %>,
+              <%= @profile.country %>
+            </p>
+          <% end %>
+          </div>
+
+        </div>
+
+        <div class="pb-2">
+          <%= link_to "Modifier le profil",
+            edit_profile_path,
+            class: "btn-primary" %>
+        </div>
+
+      </div>
+
+      <!-- INFOS -->
+      <div class="mt-10 grid gap-6 md:grid-cols-2">
+
+        <!-- PERSONAL -->
+        <div class="rounded-2xl border border-gray-200 p-6">
+
+          <h2 class="mb-6 text-lg font-semibold text-gray-900">
+            Informations personnelles
+          </h2>
+
+          <div class="space-y-4">
+
+            <div>
+              <p class="text-sm font-medium text-gray-500">
+                Prénom
+              </p>
+
+              <p class="mt-1 text-gray-900">
+                <%= @profile.first_name.presence || "-" %>
+              </p>
+            </div>
+
+            <div>
+              <p class="text-sm font-medium text-gray-500">
+                Nom
+              </p>
+
+              <p class="mt-1 text-gray-900">
+                <%= @profile.last_name.presence || "-" %>
+              </p>
+            </div>
+
+            <div>
+              <p class="text-sm font-medium text-gray-500">
+                Téléphone
+              </p>
+
+              <p class="mt-1 text-gray-900">
+                <%= @profile.phone.presence || "-" %>
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- SETTINGS -->
+        <div class="rounded-2xl border border-gray-200 p-6">
+
+          <h2 class="mb-6 text-lg font-semibold text-gray-900">
+            Préférences
+          </h2>
+
+          <div class="space-y-4">
+
+            <div>
+              <p class="text-sm font-medium text-gray-500">
+                Langue
+              </p>
+
+              <p class="mt-1 text-gray-900">
+                <%= @profile.language.presence || "-" %>
+              </p>
+            </div>
+
+            <div>
+              <p class="text-sm font-medium text-gray-500">
+                Fuseau horaire
+              </p>
+
+              <p class="mt-1 text-gray-900">
+                <%= @profile.timezone.presence || "-" %>
+              </p>
+            </div>
+
+            <div>
+              <p class="text-sm font-medium text-gray-500">
+                Pays
+              </p>
+
+              <p class="mt-1 text-gray-900">
+                <%= @profile.country.presence || "-" %>
+              </p>
+            </div>
+
+            <div>
+              <p class="text-sm font-medium text-gray-500">
+                Ville
+              </p>
+
+              <p class="mt-1 text-gray-900">
+                <%= @profile.city.presence || "-" %>
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
