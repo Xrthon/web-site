@@ -5,12 +5,11 @@ Rails.application.routes.draw do
   #Elles disent à Rails quelles URLs existent, vers quels controllers elles vont, et quels helpers _path Rails crée
   resource :session
   resource :registration, only: [:new, :create]
-  resource :profile, only: [:show, :edit, :update]
+  resource :profile, only: [:show, :new, :create, :edit, :update]
+  resource :email_verification, only: [:show, :create]
 
 
   resources :passwords, param: :token
-  resources :products
-  resources :carts, only: [:index, :show, :edit, :update]
 
 
 
@@ -31,11 +30,8 @@ Rails.application.routes.draw do
   
 
   get "registrations/new"
-
-
-
-  get "profiles/show"
-  get "profiles/edit"
-  get "profiles/update"
-
+  get "email_verifications/show"
+  get "/email_verification/:token",
+    to: "email_verifications#verify",
+    as: :verify_email
 end

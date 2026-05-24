@@ -9,34 +9,21 @@ application up and running.
         - How to use Authentication in ruby on rails 8 ✅
         - Authentication adding Signup Flow & User profiles
 
-Commande Rails :
-`rails g authentication` génére l’authentification pour l’app suivi de la commande `rails db:migrate`
-`rails active_storage:install` active le stockage sur rails suivi de la commande `rails db:migrate`
-`rails instrumental:authentication`
+Commande **Rails** :
 
-Creation des models : 
-bin/rails g model Role name:string:uniq
-bin/rails g model UserProfile user:references first_name:string last_name:string display_name:string phone:string avatar_url:string language:string timezone:string country:string city:string
-bin/rails g model Cart user:references status:string
-bin/rails g model CartItem cart:references product:references quantity:integer
-bin/rails g scaffold Product name:string description:text price:decimal active:boolean
-bin/rails g migration AddRoleAndUsernameToUsers role:references username:string active:boolean
-Things you may want to cover:
+- `rails g authentication` génére l’authentification pour l’app suivi de la commande: `rails db:migrate`
+- `rails generate controller EmailVerifications show` cree un controller et un dossier dans view/email_verification/show.html.erb
 
-- Ruby version
+# Mon stack de template
 
-- System dependencies
+## - [Rails](https://rubyonrails.org/)
 
-- Configuration
+### 1. Information
 
-- Database creation
+La version utiliser est [3.3.x](https://rubyinstaller.org/downloads/) pour Ruby avec le DevKit
 
-- Database initialization
+## - MariaDB
 
-- How to run the test suite
+## - IA locale
 
-- Services (job queues, cache servers, search engines, etc.)
-
-- Deployment instructions
-
-- ...
+## - Embeddings

@@ -1,149 +1,196 @@
-<div class="mx-auto max-w-4xl">
+<div class="mx-auto w-full px-6">
 
-  <div class="overflow-hidden rounded-3xl bg-white shadow">
+  <div class="overflow-hidden rounded-3xl bg-white shadow-xl">
 
     <!-- HEADER -->
-    <div class="h-40 bg-gradient-to-r <%= @profile.header_gradient %>"></div>
+    <div class="bg-gradient-to-r from-gray-900 to-gray-700 px-8 py-10">
 
-    <!-- PROFILE CONTENT -->
-    <div class="relative px-8 pb-8">
+      <div class="flex items-center justify-between">
 
-      <!-- AVATAR -->
-      <div class="-mt-16 flex items-end justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-white">
+            Profil utilisateur
+          </h1>
 
-        <div class="flex items-end gap-6">
+          <p class="mt-2 text-gray-300">
+            Informations personnelles du compte.
+          </p>
+        </div>
 
-          <div class="h-32 w-32 overflow-hidden rounded-2xl border-4 border-white bg-gray-200 shadow">
-            <% if @profile.avatar_url.present? %>
-              <img
-                src="<%= @profile.avatar_url %>"
-                alt="Avatar"
-                class="h-full w-full object-cover"
-              >
-            <% else %>
-              <div class="flex h-full w-full items-center justify-center text-4xl font-bold text-gray-500">
-                <%= @profile.first_name&.first %><%= @profile.last_name&.first %>
-              </div>
-            <% end %>
-          </div>
+        <%= link_to "Modifier",
+            edit_profile_path,
+            class: "
+              rounded-xl bg-white/10 px-5 py-3
+              text-sm font-medium text-white
+              transition hover:bg-white/20
+            " %>
 
-          <div class="pb-2">
-            <h1 class="text-3xl font-bold text-gray-900">
-              <%= @profile.display_name.presence || "#{@profile.first_name} #{@profile.last_name}" %>
-            </h1>
+      </div>
 
-          <% unless @profile.city.empty? %>
-            <p class="mt-1 text-gray-500">
-              <%= @profile.city %>,
-              <%= @profile.country %>
-            </p>
-          <% end %>
-          </div>
+    </div>
+
+    <div class="p-8">
+
+      <!-- INFORMATIONS PRINCIPALES -->
+      <div class="grid gap-6 md:grid-cols-2">
+
+        <!-- DISPLAY NAME -->
+        <div class="rounded-2xl border border-gray-200 p-5">
+
+          <p class="text-sm font-medium text-gray-500">
+            Nom affiché
+          </p>
+
+          <p class="mt-2 text-lg font-semibold text-gray-900">
+            <%= @profile.display_name.presence || "-" %>
+          </p>
 
         </div>
 
-        <div class="pb-2">
-          <%= link_to "Modifier le profil",
-            edit_profile_path,
-            class: "btn-primary" %>
+        <!-- EMAIL -->
+        <div class="rounded-2xl border border-gray-200 p-5">
+
+          <p class="text-sm font-medium text-gray-500">
+            Adresse courriel
+          </p>
+
+          <p class="mt-2 text-lg font-semibold text-gray-900">
+            <%= Current.user.email %>
+          </p>
+
+        </div>
+
+        <!-- FIRST NAME -->
+        <div class="rounded-2xl border border-gray-200 p-5">
+
+          <p class="text-sm font-medium text-gray-500">
+            Prénom
+          </p>
+
+          <p class="mt-2 text-lg font-semibold text-gray-900">
+            <%= @profile.first_name.presence || "-" %>
+          </p>
+
+        </div>
+
+        <!-- LAST NAME -->
+        <div class="rounded-2xl border border-gray-200 p-5">
+
+          <p class="text-sm font-medium text-gray-500">
+            Nom
+          </p>
+
+          <p class="mt-2 text-lg font-semibold text-gray-900">
+            <%= @profile.last_name.presence || "-" %>
+          </p>
+
+        </div>
+
+        <!-- PHONE -->
+        <div class="rounded-2xl border border-gray-200 p-5">
+
+          <p class="text-sm font-medium text-gray-500">
+            Téléphone
+          </p>
+
+          <p class="mt-2 text-lg font-semibold text-gray-900">
+            <%= @profile.phone.presence || "-" %>
+          </p>
+
+        </div>
+
+        <!-- BIRTH DATE -->
+        <div class="rounded-2xl border border-gray-200 p-5">
+
+          <p class="text-sm font-medium text-gray-500">
+            Date de naissance
+          </p>
+
+          <p class="mt-2 text-lg font-semibold text-gray-900">
+
+            <% if @profile.birth_date.present? %>
+              <%= l(@profile.birth_date) %>
+            <% else %>
+              -
+            <% end %>
+
+          </p>
+
         </div>
 
       </div>
 
-      <!-- INFOS -->
-      <div class="mt-10 grid gap-6 md:grid-cols-2">
+      <!-- ADRESSE -->
+      <div class="mt-8 rounded-3xl border border-gray-200 p-8">
 
-        <!-- PERSONAL -->
-        <div class="rounded-2xl border border-gray-200 p-6">
+        <h2 class="text-xl font-semibold text-gray-900">
+          Adresse
+        </h2>
 
-          <h2 class="mb-6 text-lg font-semibold text-gray-900">
-            Informations personnelles
-          </h2>
+        <div class="mt-6 grid gap-6 md:grid-cols-2">
 
-          <div class="space-y-4">
+          <!-- COUNTRY -->
+          <div>
 
-            <div>
-              <p class="text-sm font-medium text-gray-500">
-                Prénom
-              </p>
+            <p class="text-sm font-medium text-gray-500">
+              Pays
+            </p>
 
-              <p class="mt-1 text-gray-900">
-                <%= @profile.first_name.presence || "-" %>
-              </p>
-            </div>
-
-            <div>
-              <p class="text-sm font-medium text-gray-500">
-                Nom
-              </p>
-
-              <p class="mt-1 text-gray-900">
-                <%= @profile.last_name.presence || "-" %>
-              </p>
-            </div>
-
-            <div>
-              <p class="text-sm font-medium text-gray-500">
-                Téléphone
-              </p>
-
-              <p class="mt-1 text-gray-900">
-                <%= @profile.phone.presence || "-" %>
-              </p>
-            </div>
+            <p class="mt-2 text-base font-medium text-gray-900">
+              <%= @profile.country.presence || "-" %>
+            </p>
 
           </div>
 
-        </div>
+          <!-- CITY -->
+          <div>
 
-        <!-- SETTINGS -->
-        <div class="rounded-2xl border border-gray-200 p-6">
+            <p class="text-sm font-medium text-gray-500">
+              Ville
+            </p>
 
-          <h2 class="mb-6 text-lg font-semibold text-gray-900">
-            Préférences
-          </h2>
+            <p class="mt-2 text-base font-medium text-gray-900">
+              <%= @profile.city.presence || "-" %>
+            </p>
 
-          <div class="space-y-4">
+          </div>
 
-            <div>
-              <p class="text-sm font-medium text-gray-500">
-                Langue
-              </p>
+          <!-- ADDRESS 1 -->
+          <div class="md:col-span-2">
 
-              <p class="mt-1 text-gray-900">
-                <%= @profile.language.presence || "-" %>
-              </p>
-            </div>
+            <p class="text-sm font-medium text-gray-500">
+              Adresse
+            </p>
 
-            <div>
-              <p class="text-sm font-medium text-gray-500">
-                Fuseau horaire
-              </p>
+            <p class="mt-2 text-base font-medium text-gray-900">
+              <%= @profile.address_line1.presence || "-" %>
+            </p>
 
-              <p class="mt-1 text-gray-900">
-                <%= @profile.timezone.presence || "-" %>
-              </p>
-            </div>
+          </div>
 
-            <div>
-              <p class="text-sm font-medium text-gray-500">
-                Pays
-              </p>
+          <!-- ADDRESS 2 -->
+          <div class="md:col-span-2">
 
-              <p class="mt-1 text-gray-900">
-                <%= @profile.country.presence || "-" %>
-              </p>
-            </div>
+            <p class="text-sm font-medium text-gray-500">
+              Appartement / Suite
+            </p>
 
-            <div>
-              <p class="text-sm font-medium text-gray-500">
-                Ville
-              </p>
+            <p class="mt-2 text-base font-medium text-gray-900">
+              <%= @profile.address_line2.presence || "-" %>
+            </p>
 
-              <p class="mt-1 text-gray-900">
-                <%= @profile.city.presence || "-" %>
-              </p>
-            </div>
+          </div>
+
+          <!-- POSTAL CODE -->
+          <div>
+
+            <p class="text-sm font-medium text-gray-500">
+              Code postal
+            </p>
+
+            <p class="mt-2 text-base font-medium text-gray-900">
+              <%= @profile.postal_code.presence || "-" %>
+            </p>
 
           </div>
 

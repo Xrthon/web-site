@@ -1,37 +1,63 @@
+#quand on ecrit User --> rails s'attend a trouver la table users dan la BD 
+  # ApplicationRecord : herite de ActiveRecord::Base
+  # cela donne acces: 
+    # SQL
+    # .find
+    # .where
+    # .create
+    # Validations
+    # callbacks
+    # Association 
 class User < ApplicationRecord
+
+  # vien du gem bcrypt 
+    # Rails rajoute automatiquement :
+      # password
+      # password=
+      #uthenticate()
+    # par contre la table SQL doit avoir password_digest
   has_secure_password
 
-  #cette table possede un foreigne key de role
-  belongs_to :role, optional:true 
-
+  # has_one ruby supprose que user_profile.user_id donc il genere: 
+    # user.user_profile
+    # user.build_user_profile
+    # user.create_user_profile / create_user_profile!(lancve un execption si une erreur de validation)
   has_one :user_profile, dependent: :destroy
-  # ici on pourrais forcer l'utilisateur a avoir un seul panier avec : has_one :cart
-  
+
+ 
+  # has_many fait en sorte que rails genere automatiquement : 
+    #user.user_roles
+    #user.user_roles << role
+    #user.user_roles.build
+    #user.user_roles.build
+    #user.user_role_ids
+  has_many :user_roles, dependent: :destroy
+
+  has_many :user_files, dependent: :destroy
+  # through permet a ruby de faire un join SQL  de users <--> user_roles <-->  roles: 
+  has_many :roles, through: :user_roles
+
+  #le destroy permet de supprimer les donner lorsque user.destroy
   has_many :sessions, dependent: :destroy
-  #Par contre il est plus que courrant de vcouloir plusieur panier exemple avec des wishlist etc...
-  has_many :carts, dependent: :destroy
-  
-  normalizes :email_address, with: ->(e) { e.strip.downcase }
 
-  after_create :assign_default_role
-  after_create :create_default_profile    
-  after_create :create_default_cart
 
-  private
+  #Le controller de user instancie la variable avec le create! du model  UserEmailVerification
+  has_many :email_verification_tokens, class_name: "UserEmailVerificationToken", dependent: :destroy
 
-  def assign_default_role 
-    update(role: Role.find_by!(name: "client"))
-  end
 
-  def create_default_profile
-    create_user_profile!
-  end
+  # s'execute avant la sauvegarde 
+  normalizes :email, with: ->(e) { e.strip.downcase }
 
-  def create_default_cart
-    carts.create!(status: "active")
-  end
+  # Apres l'insersion SQL Rails appelle ces fonctions
+  # after_create :assign_default_role
+  # after_create :create_default_profile
+  # after_create :create_default_cart
 
-  def active_cart
-    carts.find_by(status: "active")
+  #validation a faire sur l'email
+  validates :username, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: true
+
+  def email_verified?
+    email_verified_at.present?
   end
 end

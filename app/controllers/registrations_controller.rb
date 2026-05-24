@@ -3,15 +3,20 @@ class RegistrationsController < ApplicationController
 
   def new
     redirect_to dashboard_path if authenticated?
+
     @user = User.new
   end
 
   def create
-    @user = User.new(user_params)
+    service = Users::Register.new(user_params)
+    @user = service.user
 
-    if @user.save
-      redirect_to new_session_path, notice: "Compte créé. Connecte-toi."
+    if service.call
+      start_new_session_for(@user)
+      redirect_to new_profile_path, notice: "Compte créé avec succès."
     else
+      flash.now[:alert] = "Veuillez corriger les erreurs."
+
       render :new, status: :unprocessable_entity
     end
   end
@@ -20,8 +25,8 @@ class RegistrationsController < ApplicationController
 
   def user_params
     params.require(:user).permit(
-      :email_address,
       :username,
+      :email,
       :password,
       :password_confirmation
     )

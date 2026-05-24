@@ -26,12 +26,13 @@
 #     en:
 #       "yes": yup
 #       enabled: "ON"
+# config/locales/fr.yml
 
-en:
-  hello: "Hello world"
-
+fr:
+  hello: "Bonjour"
+ 
   file_categories:
-    profile_image: "profile image"
-    identity_document: "identity document"
-    invoice: "invoice"
-    ai_upload: "AI upload"
+    profile_image: "image de profil"
+    identity_document: "document d'identité"
+    invoice: "facture"
+    ai_upload: "fichier d'IA"

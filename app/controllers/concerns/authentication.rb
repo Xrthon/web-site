@@ -25,8 +25,21 @@ module Authentication
       Current.session ||= find_session_by_cookie
     end
 
-    def find_session_by_cookie
-      Session.find_by(id: cookies.signed[:session_id]) if cookies.signed[:session_id]
+    def resume_session
+      token = cookies.signed[:session_token]
+      return unless token.present?
+
+      session_token_hash = Digest::SHA256.hexdigest(token)
+
+      session = Session.find_by(
+        session_token_hash: session_token_hash,
+        revoked_at: nil
+      )
+
+      return unless session
+      return if session.expires_at <= Time.current
+
+      Current.session = session
     end
 
     def request_authentication
@@ -41,14 +54,22 @@ module Authentication
     end
 
     def start_new_session_for(user)
-      user.sessions.create!(user_agent: request.user_agent, ip_address: request.remote_ip).tap do |session|
-        Current.session = session
-        cookies.signed.permanent[:session_id] = { value: session.id, httponly: true, same_site: :lax }
-      end
+      session = user.sessions.create!(
+        ip_address: request.remote_ip,
+        user_agent: request.user_agent
+      )
+
+      Current.session = session
+
+      cookies.signed.permanent[:session_token] = {
+        value: session.raw_session_token,
+        httponly: true,
+        same_site: :lax
+      }
     end
 
     def terminate_session
       Current.session.destroy
-      cookies.delete(:session_id)
+      cookies.delete(:session_token)
     end
 end
