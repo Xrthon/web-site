@@ -1,6 +1,21 @@
-<p>
-  You can reset your password on
-  <%= link_to "this password reset page", edit_password_url(@user.password_reset_token) %>.
+<h1>Réinitialisation de votre mot de passe</h1>
 
-  This link will expire in <%= distance_of_time_in_words(0, @user.password_reset_token_expires_in) %>.
+<p>
+  Une demande de réinitialisation de mot de passe a été faite pour votre compte.
+</p>
+
+<p>
+  Cliquez sur le lien ci-dessous pour choisir un nouveau mot de passe :
+</p>
+
+<p>
+  <%= link_to "Réinitialiser mon mot de passe", edit_password_url(@raw_token) %>
+</p>
+
+<p>
+  Ce lien expire dans 15 minutes.
+</p>
+
+<p>
+  Si vous n’avez pas demandé cette réinitialisation, ignorez ce courriel.
 </p>

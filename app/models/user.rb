@@ -23,7 +23,7 @@ class User < ApplicationRecord
     # user.build_user_profile
     # user.create_user_profile / create_user_profile!(lancve un execption si une erreur de validation)
   has_one :user_profile, dependent: :destroy
-
+  has_one :identity_verification,  class_name: "UserIdentityVerification", dependent: :destroy
  
   # has_many fait en sorte que rails genere automatiquement : 
     #user.user_roles
@@ -32,8 +32,9 @@ class User < ApplicationRecord
     #user.user_roles.build
     #user.user_role_ids
   has_many :user_roles, dependent: :destroy
-
   has_many :user_files, dependent: :destroy
+
+
   # through permet a ruby de faire un join SQL  de users <--> user_roles <-->  roles: 
   has_many :roles, through: :user_roles
 
@@ -44,6 +45,8 @@ class User < ApplicationRecord
   #Le controller de user instancie la variable avec le create! du model  UserEmailVerification
   has_many :email_verification_tokens, class_name: "UserEmailVerificationToken", dependent: :destroy
 
+  #
+  has_many :password_resets, class_name: "UserPasswordReset", dependent: :destroy
 
   # s'execute avant la sauvegarde 
   normalizes :email, with: ->(e) { e.strip.downcase }

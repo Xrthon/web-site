@@ -199,7 +199,7 @@ class UserFile < ApplicationRecord
   # avatar.png
   #
   def full_filename
-    "#{stored_filename}.#{file_extension}"
+    stored_filename
   end
 
   # Retourne la taille du fichier en MB

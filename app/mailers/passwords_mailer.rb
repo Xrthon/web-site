@@ -1,6 +1,8 @@
 class PasswordsMailer < ApplicationMailer
-  def reset(user)
+  def reset(user, raw_token)
     @user = user
-    mail subject: "Reset your password", to: user.email_address
+    @raw_token = raw_token
+
+    mail subject: "Réinitialisation de votre mot de passe", to: user.email
   end
 end

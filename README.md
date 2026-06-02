@@ -13,6 +13,8 @@ Commande **Rails** :
 
 - `rails g authentication` génére l’authentification pour l’app suivi de la commande: `rails db:migrate`
 - `rails generate controller EmailVerifications show` cree un controller et un dossier dans view/email_verification/show.html.erb
+- `rails generate model IdentityVerificationStatus --no-migration` generation d"un model dans models/
+
 
 # Mon stack de template
 
