@@ -1,0 +1,16 @@
+<%= link_to "Admin",
+    admin_root_path,
+    class: "text-sm font-medium text-red-700 hover:text-red-900" %>
+
+<%= link_to "Vérifications",
+    admin_identity_verifications_path,
+    class: "text-sm font-medium text-gray-700 hover:text-black" %>
+
+<%= link_to "Mon profil",
+    profile_path,
+    class: "text-sm font-medium text-gray-700 hover:text-black" %>
+
+<%= button_to "Déconnexion",
+    session_path,
+    method: :delete,
+    class: "text-sm font-medium text-gray-700 hover:text-black" %>

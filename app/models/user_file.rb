@@ -238,4 +238,3 @@ class UserFile < ApplicationRecord
     storage_key
   end
 end
-```

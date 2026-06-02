@@ -1,4 +1,16 @@
 Rails.application.routes.draw do
+
+  namespace :admin do
+    root "dashboard#show"
+
+    resources :user_files, only: [:show]
+    resources :identity_verifications, only: [:index, :show] do
+      member do
+        patch :approve
+        patch :reject
+      end
+    end
+  end
   
   
 
@@ -7,6 +19,7 @@ Rails.application.routes.draw do
   resource :registration, only: [:new, :create]
   resource :profile, only: [:show, :new, :create, :edit, :update]
   resource :email_verification, only: [:show, :create]
+  resource :identity_verification, only: [:show, :new, :create]
 
 
   resources :passwords, param: :token
@@ -34,4 +47,8 @@ Rails.application.routes.draw do
   get "/email_verification/:token",
     to: "email_verifications#verify",
     as: :verify_email
+
+  get "identity_verifications/show"
+  get "identity_verifications/new"
+  get "identity_verifications/create"
 end

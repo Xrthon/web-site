@@ -30,9 +30,106 @@
 
 fr:
   hello: "Bonjour"
- 
+
   file_categories:
     profile_image: "image de profil"
     identity_document: "document d'identité"
     invoice: "facture"
     ai_upload: "fichier d'IA"
+
+  identity_document_types:
+    passport: "Passeport"
+    driver_license: "Permis de conduire"
+    residence_card: "Carte de résidence"
+    national_identity_card: "Carte d'identité nationale"
+
+  identity_verification_statuses:
+    pending: "En attente"
+    approved: "Approuvé"
+    rejected: "Refusé"
+    expired: "Expiré"
+
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d %b"
+      long: "%d %B %Y"
+
+    day_names:
+      - dimanche
+      - lundi
+      - mardi
+      - mercredi
+      - jeudi
+      - vendredi
+      - samedi
+
+    abbr_day_names:
+      - dim
+      - lun
+      - mar
+      - mer
+      - jeu
+      - ven
+      - sam
+
+    month_names:
+      -
+      - janvier
+      - février
+      - mars
+      - avril
+      - mai
+      - juin
+      - juillet
+      - août
+      - septembre
+      - octobre
+      - novembre
+      - décembre
+
+    abbr_month_names:
+      -
+      - jan
+      - fév
+      - mar
+      - avr
+      - mai
+      - juin
+      - juil
+      - août
+      - sep
+      - oct
+      - nov
+      - déc
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M"
+      short: "%d %b %H:%M"
+      long: "%d %B %Y à %H:%M"
+  errors:
+    messages:
+      blank: "ne peut pas être vide"
+      taken: "est déjà utilisé"
+      too_short: "est trop court"
+      too_long: "est trop long"
+      invalid: "est invalide"
+      confirmation: "ne correspond pas à la confirmation"
+
+  activerecord:
+    attributes:
+      user_profile:
+        display_name: "Nom affiché"
+        first_name: "Prénom"
+        last_name: "Nom"
+        country: "Pays"
+        city: "Ville"
+        address_line1: "Adresse"
+        postal_code: "Code postal"
+
+    errors:
+      models:
+        user_profile:
+          attributes:
+            display_name:
+              blank: "ne peut pas être vide"

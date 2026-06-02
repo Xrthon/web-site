@@ -3,17 +3,31 @@
 
     <div class="text-xl font-bold">
       HextraQ
-    </div>
-
+    </div> 
     <div class="flex items-center gap-6">
-      <%= link_to "Accueil", root_path,
-        class: "text-sm font-medium text-gray-700 hover:text-black" %>
 
-        <% if authenticated? %>
-        <%= render "shared/navbar/user_links" %>
+      <%= link_to "Accueil",
+          root_path,
+          class: "text-sm font-medium text-gray-700 hover:text-black" %>
+
+      <% if authenticated? %>
+
+        <% if Current.user.admin? %>
+
+          <%= render "shared/navbar/admin_links" %>
+
         <% else %>
-        <%= render "shared/navbar/guest_links" %>
+
+          <%= render "shared/navbar/user_links" %>
+
         <% end %>
+
+      <% else %>
+
+        <%= render "shared/navbar/guest_links" %>
+
+      <% end %>
+
     </div>
 
   </div>

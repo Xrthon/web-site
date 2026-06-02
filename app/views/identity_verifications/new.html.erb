@@ -1,0 +1,126 @@
+<div class="mx-auto w-full px-6">
+  <div class="overflow-hidden rounded-3xl bg-white shadow-xl">
+
+    <!-- HEADER -->
+    <div class="bg-gradient-to-r from-gray-900 to-gray-700 px-8 py-10">
+      <h1 class="text-3xl font-bold text-white">
+        Vérification d'identité
+      </h1>
+
+      <p class="mt-2 text-gray-300">
+        Téléversez un document gouvernemental valide pour vérifier votre identité.
+      </p>
+    </div>
+
+    <div class="p-8">
+
+      <% if alert = flash[:alert] %>
+        <div class="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+          <%= alert %>
+        </div>
+      <% end %>
+
+      <% if notice = flash[:notice] %>
+        <div class="mb-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+          <%= notice %>
+        </div>
+      <% end %>
+
+      <div class="mb-8 rounded-2xl border border-yellow-200 bg-yellow-50 px-5 py-4">
+        <p class="text-sm font-medium text-yellow-800">
+          Les documents acceptés doivent être lisibles, non expirés et correspondre à votre identité réelle.
+        </p>
+      </div>
+
+      <%= form_with url: identity_verification_path,
+                    method: :post,
+                    multipart: true,
+                    data: { turbo: false },
+                    class: "space-y-6" do |form| %>
+
+        <!-- DOCUMENT TYPE -->
+        <div>
+          <%= form.label :identity_document_type_id,
+              "Type de document",
+              class: "mb-2 block text-sm font-medium text-gray-700" %>
+
+          <%= form.collection_select :identity_document_type_id,
+              @document_types,
+              :id,
+              :translated_name,
+              { prompt: "Sélectionnez un type de document" },
+              {
+                required: true,
+                class: "w-full rounded-xl border-gray-300 px-4 py-3"
+              } %>
+        </div>
+
+        <!-- FILE FRONT -->
+        <div>
+          <%= form.label :file_front,
+              "Document - recto",
+              class: "mb-2 block text-sm font-medium text-gray-700" %>
+
+          <%= form.file_field :file_front,
+              required: true,
+              accept: "image/png,image/jpeg,application/pdf",
+              class: "
+                w-full rounded-xl border border-gray-300 px-4 py-3
+                file:mr-4 file:rounded-lg file:border-0
+                file:bg-gray-900 file:px-4 file:py-2
+                file:text-sm file:font-medium file:text-white
+                hover:file:bg-gray-800
+              " %>
+
+          <p class="mt-2 text-sm text-gray-500">
+            Formats acceptés : JPG, PNG ou PDF. Taille maximale : 10 MB.
+          </p>
+        </div>
+
+        <!-- FILE BACK -->
+        <div>
+          <%= form.label :file_back,
+              "Document - verso",
+              class: "mb-2 block text-sm font-medium text-gray-700" %>
+
+          <%= form.file_field :file_back,
+              accept: "image/png,image/jpeg,application/pdf",
+              class: "
+                w-full rounded-xl border border-gray-300 px-4 py-3
+                file:mr-4 file:rounded-lg file:border-0
+                file:bg-gray-900 file:px-4 file:py-2
+                file:text-sm file:font-medium file:text-white
+                hover:file:bg-gray-800
+              " %>
+
+          <p class="mt-2 text-sm text-gray-500">
+            Optionnel. Requis seulement si le document possède un verso utile.
+          </p>
+        </div>
+
+        <!-- EXPIRES AT -->
+        <div>
+          <%= form.label :expires_at,
+              "Date d'expiration du document",
+              class: "mb-2 block text-sm font-medium text-gray-700" %>
+
+          <%= form.date_field :expires_at,
+              required: true,
+              class: "w-full rounded-xl border-gray-300 px-4 py-3" %>
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="pt-4">
+          <%= form.submit "Envoyer mes documents",
+              class: "
+                w-full rounded-xl bg-gray-900 px-6 py-3
+                font-medium text-white transition
+                hover:bg-gray-800
+              " %>
+        </div>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>

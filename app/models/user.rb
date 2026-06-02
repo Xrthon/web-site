@@ -63,4 +63,9 @@ class User < ApplicationRecord
   def email_verified?
     email_verified_at.present?
   end
+
+  def admin?
+    roles.exists?(code: "admin")
+  end
+  
 end
