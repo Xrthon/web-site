@@ -1,4 +1,4 @@
--- Table principale de notre utilisateur
+-- users: Table principale de notre utilisateur
 	--	Obligatoire pour identifier un compte
 create table users (
     id bigint auto_increment primary key,
@@ -16,7 +16,7 @@ create table users (
     updated_at timestamp not null default current_timestamp
         on update current_timestamp
 );
--- Category de fichier --> look up (voir comment faire une look up bilingue)
+-- file_categories:  Category de fichier --> look up (voir comment faire une look up bilingue)
 create table file_categories (
     id bigint auto_increment primary key,
 
@@ -27,7 +27,7 @@ create table file_categories (
         default current_timestamp
         on update current_timestamp
 );
--- user_files rassemble toute les fichier de l'utilisateur 
+-- user_files: rassemble toute les fichier de l'utilisateur 
 create table user_files (
     id bigint auto_increment primary key,
     user_id bigint not null,
@@ -68,7 +68,7 @@ create table user_files (
         references file_categories(id)
         on delete restrict
 );
--- user_profiles Table de pour faire le profile de l'utilisateur
+-- user_profiles: Table de pour faire le profile de l'utilisateur
 	--	element secondaire
 create table user_profiles (
     id bigint auto_increment primary key,
@@ -111,7 +111,7 @@ create table user_profiles (
         references users(id)
         on delete cascade
 );
--- La table de verification des emails sert pour savoir 
+-- user_email_verification_tokens: La table de verification des emails sert pour savoir 
 	-- l’email existe réellement
 	-- l’utilisateur possède cet email
 	-- l’utilisateur peut recevoir des messages
@@ -133,7 +133,7 @@ create table user_email_verification_tokens (
         references users(id)
         on delete cascade
 );
--- Un table pour le user_password_reset sert : 
+-- user_password_resets: Une table pour le user_password_reset sert : 
 	-- Invalider anciens tokens
 	-- Garder un historique
 	-- Limiter abus/spam
@@ -164,7 +164,7 @@ create table user_password_resets (
         on delete cascade
         
 );
--- ici nous enregistrons les information de la sessions actuel de l'utilisateur 
+-- sessions: ici nous enregistrons les information de la sessions actuel de l'utilisateur 
 create table sessions (
     id bigint auto_increment primary key,
 
@@ -203,7 +203,7 @@ create table sessions (
         references users(id)
         on delete cascade
 );
--- les événements de connexion
+-- user_login_histories: les événements de connexion
 	-- historique permanent
 create table user_login_histories (
     id bigint auto_increment primary key,
@@ -245,8 +245,7 @@ create table user_login_histories (
         references sessions(id)
         on delete set null
 );
-
--- status de verification d'identite
+-- identity_verification_statuses: status de verification d'identite
 create table identity_verification_statuses (
     id bigint auto_increment primary key,
 
@@ -258,8 +257,7 @@ create table identity_verification_statuses (
         default current_timestamp
         on update current_timestamp
 );
-
--- types de documents acceptes
+-- identity_document_types: types de documents acceptes
 create table identity_document_types (
     id bigint auto_increment primary key,
 
@@ -271,8 +269,7 @@ create table identity_document_types (
         default current_timestamp
         on update current_timestamp
 );
-
--- verification d'identite utilisateur
+-- user_identity_verifications:  verification d'identite utilisateur
 create table user_identity_verifications (
     id bigint auto_increment primary key,
 
@@ -306,8 +303,7 @@ create table user_identity_verifications (
         references users(id)
         on delete set null
 );
-
--- documents d'identite utilisateur
+-- user_identity_documents: documents d'identite utilisateur
 create table user_identity_documents (
     id bigint auto_increment primary key,
 
@@ -346,6 +342,7 @@ create table user_identity_documents (
         references user_files(id)
         on delete restrict
 );
+-- roles: lookup table pour les roles 
 create table roles (
     id bigint auto_increment primary key,
 
@@ -358,7 +355,7 @@ create table roles (
         default current_timestamp
         on update current_timestamp
 );
-
+-- user_roles: table de liaison pour les users et leur role
 create table user_roles (
     id bigint auto_increment primary key,
 
@@ -387,6 +384,8 @@ create table user_roles (
         on delete cascade
 );
 
+
+-- Historique : a continuer
 create table user_role_histories (
     id bigint auto_increment primary key,
 
