@@ -15,7 +15,9 @@
         <% if Current.user.admin? %>
 
           <%= render "shared/navbar/admin_links" %>
+        <% elsif Current.user.client? %>
 
+          <%= render "shared/navbar/client_links" %>
         <% else %>
 
           <%= render "shared/navbar/user_links" %>

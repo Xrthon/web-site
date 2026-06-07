@@ -1,43 +1,36 @@
 
--- service_location_types:
-	-- Look up pour savoir si l'intervention est a distance ou presentiel
-Table service_location_types {
-  id integer auto_increment primary key,
+create table service_location_types (
+    id bigint auto_increment primary key,
 
-  code varchar not null  unique,
+    code varchar(50) not null unique,
 
-  created_at timestamp not null default current_timestamp,
-  updated_at timestamp not null default current_timestamp on update current_timestamp
-}
+    created_at timestamp not null default current_timestamp,
+    updated_at timestamp not null default current_timestamp on update current_timestamp
+);
 
--- domain_categories:
-	-- La table des domain_categories sert a definir
-  	-- les types de categories pour englober plusieurs domain
-Table domain_categories {
-  id integer auto_increment primary key,
+create table domain_categories (
+    id bigint auto_increment primary key,
 
-  code varchar(100) not null, unique
+    code varchar(100) not null unique,
 
-  created_at timestamp default current_timestamp,
-  updated_at timestamp default current_timestamp on update current_timestamp
-}
+    created_at timestamp not null default current_timestamp,
+    updated_at timestamp not null default current_timestamp on update current_timestamp
+);
 
--- domains:
-	-- La table des domains sert a definir
-  	-- les types de domains qu'une categorie peu contenire
-Table domains {
-  id integer auto_increment primary key,
+create table domains (
+    id bigint auto_increment primary key,
 
-  domain_category_id integer not null, 
-  code varchar(50) not null unique,
+    domain_category_id bigint not null,
+    code varchar(50) not null unique,
 
-  created_at timestamp default current_timestamp,
-  updated_at timestamp default current_timestamp on update current_timestamp,
-  
-  constraint fk_domains_category
-  	foreign key (domain_category_id)
-  	references domain_categories(id)
-}
+    created_at timestamp not null default current_timestamp,
+    updated_at timestamp not null default current_timestamp on update current_timestamp,
+
+    constraint fk_domains_category
+        foreign key (domain_category_id)
+        references domain_categories(id)
+        on delete restrict
+);
 
 -- client_need_statuses
 	-- La table des status des besoins client sert a definir
@@ -45,14 +38,14 @@ Table domains {
   	-- comme draft, active, completed ou cancelled
 	-- cela permetera de centraliser et standardiser les status
 	-- utiliser dans le systeme de gestion des besoins client
-Table client_need_statuses {
+CREATE table client_need_statuses (
   id integer auto_increment primary key, 
 
-  code varchar not null unique,
+  code varchar(50) not null unique,
 
   created_at timestamp default current_timestamp,
   updated_at timestamp default current_timestamp on update current_timestamp
-}
+);
 
 -- client_needs:
 	-- La table des besoins client sert a representer
@@ -61,97 +54,120 @@ Table client_need_statuses {
 	-- cela permetera a un client de decrire ses besoins
 	-- afin de trouver des autonomes ou entreprises qualifiees
 	-- pour realiser les travaux ou services demander
-Table client_needs {
-  id bigint auto_increment primary key,
+create table client_needs (
+    id bigint auto_increment primary key,
 
-  user_id bigint not null,
-  domain_id integer not null,
-  client_need_status_id integer not null,  
-  service_location_type_id integer [not null, ref: > service_location_types.id]
+    user_id bigint not null,
+    domain_id bigint not null,
+    client_need_status_id bigint not null,
+    service_location_type_id bigint not null,
 
-  title varchar [not null]
+    title varchar(255) not null,
 
-  city varchar
-  postal_code varchar
-  province varchar
+    city varchar(255),
+    postal_code varchar(255),
+    province varchar(255),
 
-  budget_min decimal
-  budget_max decimal
+    budget_min decimal(10,2),
+    budget_max decimal(10,2),
 
-  desired_date date
-  is_urgent boolean [not null, default: false]
+    desired_date date,
 
-  published_at timestamp
+    is_urgent boolean not null default false,
 
-  created_at timestamp
-  updated_at timestamp
-  
-  constraint fk_client_needs_user 
-  	foreign key (user_id)
-  	references users(id)
-  	on delete cascade,
-  	
-  constraint fk_client_needs_domain
-  	foreign key (domain_id)
-	references  domains(id),
-	
-  constraint fk_client_needs_status
-  	foreign key (client_need_status_id)
-  	references client_need_statuses(id),
-  	
-  	constraint fk_client_needs_service_type
-  		foreign key (service_location_type_id)
-  		references service_location_types(id)	
-}
+    published_at timestamp null,
 
-Table domain_tasks {
-  id integer [primary key, increment]
+    created_at timestamp not null default current_timestamp,
 
-  domain_id integer [not null, ref: > domains.id]
+    updated_at timestamp not null
+        default current_timestamp
+        on update current_timestamp,
 
-  code varchar [not null, unique]
-  title varchar [not null]
+    constraint fk_client_needs_user
+        foreign key (user_id)
+        references users(id)
+        on delete cascade,
 
-  created_at timestamp
-  updated_at timestamp
-}
-//La table des elements de besoins client sert a decouper
-  //un besoin client en plusieurs sous besoins ou taches
-  //comme changer une prise ou installer un luminaire
-// cela permetera de decrire plus precisement les travaux
-// et services rechercher par le client
-Table client_need_items {
-  id integer [primary key, increment]
+    constraint fk_client_needs_domain
+        foreign key (domain_id)
+        references domains(id)
+        on delete restrict,
 
-  client_need_id integer [not null, ref: > client_needs.id]
-  domain_type_id integer [ref: > domain_tasks.id]
+    constraint fk_client_needs_status
+        foreign key (client_need_status_id)
+        references client_need_statuses(id)
+        on delete restrict,
 
-  title varchar [not null]
-  description text
+    constraint fk_client_needs_service_type
+        foreign key (service_location_type_id)
+        references service_location_types(id)
+        on delete restrict
+);
 
-  quantity integer
+create table domain_tasks (
+    id bigint auto_increment primary key,
 
-  created_at timestamp
-  updated_at timestamp
-}
+    domain_id bigint not null,
 
-// A verifier avec le compte business et le compte travailleur autonome
-Table client_need_proposals {
-  id integer [primary key]
+    code varchar(100) not null unique,
 
-  client_need_id integer
-  user_id integer
+    created_at timestamp not null default current_timestamp,
+    updated_at timestamp not null default current_timestamp on update current_timestamp,
 
-  message text
+    constraint fk_domain_tasks_domain
+        foreign key (domain_id)
+        references domains(id)
+        on delete restrict
+);
 
-  estimated_price decimal
+--client_need_items
+	-- La table des elements de besoins client sert a decouper
+  	-- un besoin client en plusieurs sous besoins ou taches
+  	-- comme changer une prise ou installer un luminaire
+	-- cela permetera de decrire plus precisement les travaux
+	-- et services rechercher par le client
+create table client_need_items (
+    id bigint auto_increment primary key,
 
-  created_at timestamp
-}
-//La table des domaines sert a definir
-  //les differents secteurs de services disponible sur la plateforme
-  //comme electricite, plomberie ou peinture
-// cela permetera de centraliser et standardiser les domaines
-// utiliser dans les besoins client, autonomes et entreprises
+    client_need_id bigint not null,
+    domain_task_id bigint null,
+
+    title varchar(255) not null,
+    description text,
+
+    quantity int,
+
+    created_at timestamp not null default current_timestamp,
+    updated_at timestamp not null default current_timestamp on update current_timestamp,
+
+    constraint fk_client_need_items_client_need
+        foreign key (client_need_id)
+        references client_needs(id)
+        on delete cascade,
+
+    constraint fk_client_need_items_domain_task
+        foreign key (domain_task_id)
+        references domain_tasks(id)
+        on delete set null
+);
+--client_need_proposals
+	-- A verifier avec le compte business et le compte travailleur autonome
+--Table client_need_proposals {
+  --id integer [primary key]
+
+  --client_need_id integer
+  --user_id integer
+
+--  message text
+
+  --estimated_price decimal
+
+  --created_at timestamp
+--}
+--La table des domaines sert a definir
+  --les differents secteurs de services disponible sur la plateforme
+  --comme electricite, plomberie ou peinture
+--cela permetera de centraliser et standardiser les domaines
+-- utiliser dans les besoins client, autonomes et entreprises
 
 

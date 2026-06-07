@@ -48,6 +48,9 @@ class User < ApplicationRecord
   #
   has_many :password_resets, class_name: "UserPasswordReset", dependent: :destroy
 
+ # le client a plusieur besoin 
+  has_many :client_needs, dependent: :destroy
+
   # s'execute avant la sauvegarde 
   normalizes :email, with: ->(e) { e.strip.downcase }
 
@@ -67,5 +70,7 @@ class User < ApplicationRecord
   def admin?
     roles.exists?(code: "admin")
   end
-  
+  def client?
+    roles.exists?(code: "client")
+  end
 end

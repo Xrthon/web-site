@@ -12,6 +12,9 @@ Rails.application.routes.draw do
     end
   end
   
+  namespace :client do 
+    resources :needs 
+  end
   
 
   #Elles disent à Rails quelles URLs existent, vers quels controllers elles vont, et quels helpers _path Rails crée
