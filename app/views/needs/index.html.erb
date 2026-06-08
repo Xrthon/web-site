@@ -1,4 +1,92 @@
-<div>
-  <h1 class="font-bold text-4xl">Needs#index</h1>
-  <p>Find me in app/views/needs/index.html.erb</p>
+<div class="mx-auto w-full px-6 py-6">
+
+
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-slate-900">
+      Demandes disponibles
+    </h1>
+
+    <p class="mt-2 text-sm text-slate-600">
+      Consultez les besoins publiés par les clients.
+    </p>
+  </div>
+
+  <% if @client_needs.any? %>
+
+    <div class="grid gap-6 lg:grid-cols-2">
+
+      <% @client_needs.each do |client_need| %>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+          <div class="flex items-start justify-between">
+
+            <div>
+              <h2 class="text-lg font-semibold text-slate-900">
+                <%= client_need.title %>
+              </h2>
+
+              <p class="mt-1 text-sm text-slate-500">
+                <%= client_need.domain&.translated_name %>
+              </p>
+            </div>
+
+            <% if client_need.is_urgent? %>
+              <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
+                Urgent
+              </span>
+            <% end %>
+
+          </div>
+
+          <div class="mt-5 space-y-2 text-sm text-slate-700">
+
+            <p>
+              <span class="font-semibold">Lieu :</span>
+              <%= client_need.city %>, <%= client_need.province %>
+            </p>
+
+            <p>
+              <span class="font-semibold">Type :</span>
+              <%= client_need.service_location_type&.translated_name %>
+            </p>
+
+            <p>
+              <span class="font-semibold">Budget :</span>
+              <%= number_to_currency(client_need.budget_min) %>
+              à
+              <%= number_to_currency(client_need.budget_max) %>
+            </p>
+
+            <p>
+              <span class="font-semibold">Date désirée :</span>
+              <%= client_need.desired_date || "Flexible" %>
+            </p>
+
+          </div>
+
+          <div class="mt-6 border-t border-slate-200 pt-4">
+
+            <%= link_to "Voir les détails",
+                  need_path(client_need),
+                  class: "text-sm font-semibold text-blue-600 hover:text-blue-700" %>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  <% else %>
+
+    <div class="rounded-2xl border border-slate-200 bg-white p-8 text-center">
+      <p class="text-slate-500">
+        Aucune demande n'est disponible pour le moment.
+      </p>
+    </div>
+
+  <% end %>
+
 </div>

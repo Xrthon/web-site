@@ -1,4 +1,160 @@
-<div>
-  <h1 class="font-bold text-4xl">Needs#show</h1>
-  <p>Find me in app/views/needs/show.html.erb</p>
+<div class="mx-auto w-full max-w-6xl px-6 py-6">
+
+  <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p class="text-sm font-semibold text-blue-600">
+        Demande disponible
+      </p>
+
+      <h1 class="mt-2 text-3xl font-bold text-slate-900">
+        <%= @client_need.title %>
+      </h1>
+    </div>
+
+    <div class="flex flex-col gap-3 sm:flex-row">
+
+      <%= link_to "Retour aux demandes",
+            needs_path,
+            class: "rounded-xl border border-slate-300 bg-white px-4 py-2 text-center text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50" %>
+    </div>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-3">
+
+    <div class="lg:col-span-2 space-y-6">
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="flex items-start justify-between gap-4">
+          <h2 class="text-lg font-semibold text-slate-900">
+            Informations générales
+          </h2>
+
+          <% if @client_need.is_urgent? %>
+            <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
+              Urgent
+            </span>
+          <% end %>
+        </div>
+
+        <dl class="mt-6 grid gap-4 sm:grid-cols-2">
+          <div>
+            <dt class="text-sm text-slate-500">Domaine</dt>
+            <dd class="font-medium text-slate-900">
+              <%= @client_need.domain&.translated_name || "Non défini" %>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-sm text-slate-500">Type de service</dt>
+            <dd class="font-medium text-slate-900">
+              <%= @client_need.service_location_type&.translated_name || "Non défini" %>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-sm text-slate-500">Ville</dt>
+            <dd class="font-medium text-slate-900">
+              <%= @client_need.city %>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-sm text-slate-500">Province</dt>
+            <dd class="font-medium text-slate-900">
+              <%= @client_need.province %>
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-slate-900">
+          Pièces ou tâches requises
+        </h2>
+
+        <% if @client_need.client_need_items.any? %>
+          <div class="mt-6 space-y-4">
+            <% @client_need.client_need_items.each do |item| %>
+              <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div class="flex items-center justify-between gap-4">
+                  <h3 class="font-semibold text-slate-900">
+                    <%= item.title %>
+                  </h3>
+
+                  <% if item.quantity.present? %>
+                    <span class="rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-700">
+                      Quantité : <%= item.quantity %>
+                    </span>
+                  <% end %>
+                </div>
+
+                <% if item.description.present? %>
+                  <p class="mt-3 text-sm leading-6 text-slate-600">
+                    <%= item.description %>
+                  </p>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="mt-4 text-sm text-slate-500">
+            Aucun détail supplémentaire n'a été ajouté.
+          </p>
+        <% end %>
+      </div>
+
+    </div>
+
+    <aside class="space-y-6">
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-slate-900">
+          Budget
+        </h2>
+
+        <div class="mt-4 space-y-4">
+          <div>
+            <p class="text-sm text-slate-500">Budget minimum</p>
+            <p class="font-semibold text-slate-900">
+              <%= number_to_currency(@client_need.budget_min) %>
+            </p>
+          </div>
+
+          <div>
+            <p class="text-sm text-slate-500">Budget maximum</p>
+            <p class="font-semibold text-slate-900">
+              <%= number_to_currency(@client_need.budget_max) %>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-slate-900">
+          Échéance
+        </h2>
+
+        <p class="mt-4 font-semibold text-slate-900">
+          <%= @client_need.desired_date || "Flexible" %>
+        </p>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-slate-900">
+          Soumission
+        </h2>
+
+        <p class="mt-2 text-sm text-slate-600">
+          Vous pourrez bientôt déposer une proposition pour cette demande.
+        </p>
+
+        <%= link_to "Déposer une soumission",
+              "#",
+              class: "mt-5 block rounded-xl bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-700" %>
+      </div>
+
+    </aside>
+
+  </div>
+
 </div>

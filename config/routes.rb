@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  get "needs/index"
-  get "needs/show"
+  namespace :worker do
+    get "dashboard/show"
+  end
 
   namespace :admin do
     root "dashboard#show"
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
   
 
   #Elles disent à Rails quelles URLs existent, vers quels controllers elles vont, et quels helpers _path Rails crée
+ 
   resource :session
   resource :registration, only: [:new, :create]
   resource :profile, only: [:show, :new, :create, :edit, :update]
@@ -28,6 +30,9 @@ Rails.application.routes.draw do
 
 
   resources :passwords, param: :token
+
+  
+  resources :needs, only: [:index, :show]
 
 
 

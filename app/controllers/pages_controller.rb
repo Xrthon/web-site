@@ -15,7 +15,9 @@ class PagesController< ApplicationController
   #ce que les utilisateur vont voir quand il seront connecter
   def dashboard
     redirect_to new_session_path unless authenticated?
+    
   end
+
 
 
 

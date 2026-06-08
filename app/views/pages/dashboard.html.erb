@@ -7,6 +7,11 @@
         Bienvenu, <%=Current.user.email%>!
     </p>
 
+
+    
+    <p> 
+        <%= link_to "Voir les demandes de tout le monde ", needs_path %>
+    </p>
     <!-- donc on dit que le bouton appel le /logout appelle la methode: delete du SessionsController --> 
     <%= button_to "logout", session_path, method: :delete %>
 </div>

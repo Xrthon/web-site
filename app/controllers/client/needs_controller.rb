@@ -143,6 +143,7 @@ class Client::NeedsController < ApplicationController
             :desired_date,
             :is_urgent,
             client_need_items_attributes: [
+                :id,
                 :title,
                 :description,
                 :quantity

@@ -70,6 +70,7 @@
         </p>
 
         <%= form.fields_for :client_need_items do |item_form| %>
+          <%= item_form.hidden_field :id %>
 
           <div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
 
