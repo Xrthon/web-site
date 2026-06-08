@@ -1,1 +1,235 @@
-<h1> Presentai </h1>
+<div class="mx-auto w-full max-w-6xl px-6 py-6">
+
+    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+        <p class="text-sm font-semibold text-blue-600">
+        Besoin client
+        </p>
+
+        <h1 class="mt-2 text-3xl font-bold text-slate-900">
+        <%= @client_need.title %>
+        </h1>
+    </div>
+
+    <div class="flex flex-col gap-3 sm:flex-row">
+
+    <%= link_to "Modifier",
+            edit_client_need_path(@client_need),
+            class: "rounded-xl bg-blue-600 px-4 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-700" %>
+
+    <%= button_to "Supprimer",
+            client_need_path(@client_need),
+            method: :delete,
+            data: {
+            turbo_confirm: "Êtes-vous certain de vouloir supprimer cette demande ?"
+            },
+            class: "rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700" %>
+
+    <%= link_to "Retour",
+            client_needs_path,
+            class: "rounded-xl border border-slate-300 bg-white px-4 py-2 text-center text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50" %>
+
+    </div>
+    </div>
+
+  <div class="grid gap-6 lg:grid-cols-3">
+
+    <div class="lg:col-span-2 space-y-6">
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-slate-900">
+          Informations générales
+        </h2>
+
+        <dl class="mt-6 grid gap-4 sm:grid-cols-2">
+          <div>
+            <dt class="text-sm text-slate-500">Domaine</dt>
+            <dd class="font-medium text-slate-900">
+              <%= @client_need.domain&.translated_name %>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-sm text-slate-500">Type de service</dt>
+            <dd class="font-medium text-slate-900">
+              <%= @client_need.service_location_type&.translated_name %>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-sm text-slate-500">Ville</dt>
+            <dd class="font-medium text-slate-900">
+              <%= @client_need.city %>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-sm text-slate-500">Province</dt>
+            <dd class="font-medium text-slate-900">
+              <%= @client_need.province %>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-sm text-slate-500">Code postal</dt>
+            <dd class="font-medium text-slate-900">
+              <%= @client_need.postal_code %>
+            </dd>
+          </div>
+
+          <div>
+            <dt class="text-sm text-slate-500">Urgent</dt>
+            <dd class="font-medium text-slate-900">
+              <%= @client_need.is_urgent? ? "Oui" : "Non" %>
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-slate-900">
+          Pièces requises
+        </h2>
+
+        <% if @client_need.client_need_items.any? %>
+
+          <div class="mt-6 space-y-4">
+
+            <% @client_need.client_need_items.each do |item| %>
+
+              <div class="rounded-xl border border-slate-200 p-4">
+
+                <div class="flex items-center justify-between">
+                  <h3 class="font-semibold text-slate-900">
+                    <%= item.title %>
+                  </h3>
+
+                  <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                    Quantité : <%= item.quantity %>
+                  </span>
+                </div>
+
+                <% if item.description.present? %>
+                  <p class="mt-3 text-sm text-slate-600">
+                    <%= item.description %>
+                  </p>
+                <% end %>
+
+              </div>
+
+            <% end %>
+
+          </div>
+
+        <% else %>
+
+          <p class="mt-4 text-sm text-slate-500">
+            Aucune pièce n'a été ajoutée.
+          </p>
+
+        <% end %>
+      </div>
+
+    </div>
+
+    <div>
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-slate-900">
+          Budget
+        </h2>
+
+        <div class="mt-4 space-y-4">
+
+          <div>
+            <p class="text-sm text-slate-500">
+              Budget minimum
+            </p>
+
+            <p class="font-semibold text-slate-900">
+              <%= number_to_currency(@client_need.budget_min) %>
+            </p>
+          </div>
+
+          <div>
+            <p class="text-sm text-slate-500">
+              Budget maximum
+            </p>
+
+            <p class="font-semibold text-slate-900">
+              <%= number_to_currency(@client_need.budget_max) %>
+            </p>
+          </div>
+
+          <div>
+            <p class="text-sm text-slate-500">
+              Date désirée
+            </p>
+
+            <p class="font-semibold text-slate-900">
+              <%= @client_need.desired_date %>
+            </p>
+          </div>
+
+          <div>
+            <p class="text-sm text-slate-500">
+              Créé le
+            </p>
+
+            <p class="font-semibold text-slate-900">
+              <%= l(@client_need.created_at, format: :long) %>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex items-start gap-4">
+                <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                <span class="text-2xl">📄</span>
+                </div>
+
+                <div>
+                <h2 class="text-lg font-semibold text-slate-900">
+                    Soumissions déposées
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-600">
+                    Aucune soumission pour le moment.
+                </p>
+
+                <p class="mt-4 text-3xl font-bold text-slate-900">
+                    0
+                </p>
+
+                <p class="text-sm text-slate-500">
+                    soumission reçue
+                </p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-slate-900">
+                Coût de publication
+            </h2>
+
+            <p class="mt-4 text-3xl font-bold text-slate-900">
+                0,00 $
+            </p>
+
+            <p class="mt-2 text-sm text-slate-600">
+                La publication standard est gratuite.
+            </p>
+
+            <% if @client_need.is_urgent? %>
+                <p class="mt-3 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-700">
+                Cette demande est marquée urgente. Plus tard, ce type de publication pourra être mis en avant pour 1,00 $.
+                </p>
+            <% end %>
+        </div>
+    </div>
+   
+ 
+  </div>
+
+</div>

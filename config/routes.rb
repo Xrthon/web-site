@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "needs/index"
+  get "needs/show"
 
   namespace :admin do
     root "dashboard#show"

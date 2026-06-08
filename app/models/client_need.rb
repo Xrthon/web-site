@@ -8,7 +8,7 @@ class ClientNeed < ApplicationRecord
     belongs_to :service_location_type
 
     has_many :client_need_items, dependent: :destroy
-   
+    accepts_nested_attributes_for :client_need_items
 
     #avant les validation on me le status par default car c'est pas les clients qui decide
     before_validation :set_default_status, on: :create

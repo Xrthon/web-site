@@ -39,7 +39,7 @@ create table domains (
 	-- cela permetera de centraliser et standardiser les status
 	-- utiliser dans le systeme de gestion des besoins client
 CREATE table client_need_statuses (
-  id integer auto_increment primary key, 
+  id int auto_increment primary key, 
 
   code varchar(50) not null unique,
 
@@ -59,7 +59,7 @@ create table client_needs (
 
     user_id bigint not null,
     domain_id bigint not null,
-    client_need_status_id bigint not null,
+    client_need_status_id int not null,
     service_location_type_id bigint not null,
 
     title varchar(255) not null,
@@ -68,8 +68,8 @@ create table client_needs (
     postal_code varchar(255),
     province varchar(255),
 
-    budget_min decimal(10,2),
-    budget_max decimal(10,2),
+    budget_min decimal(10,2) not null default 0.00,
+    budget_max decimal(10,2) not null default 0.00,
 
     desired_date date,
 
@@ -120,7 +120,7 @@ create table domain_tasks (
         on delete restrict
 );
 
---client_need_items
+-- client_need_items
 	-- La table des elements de besoins client sert a decouper
   	-- un besoin client en plusieurs sous besoins ou taches
   	-- comme changer une prise ou installer un luminaire
@@ -150,24 +150,24 @@ create table client_need_items (
         references domain_tasks(id)
         on delete set null
 );
---client_need_proposals
+-- client_need_proposals
 	-- A verifier avec le compte business et le compte travailleur autonome
---Table client_need_proposals {
-  --id integer [primary key]
+-- Table client_need_proposals {
+  -- id integer [primary key]
 
-  --client_need_id integer
-  --user_id integer
+  -- client_need_id integer
+  -- user_id integer
 
 --  message text
 
-  --estimated_price decimal
+  -- estimated_price decimal
 
-  --created_at timestamp
---}
---La table des domaines sert a definir
-  --les differents secteurs de services disponible sur la plateforme
-  --comme electricite, plomberie ou peinture
---cela permetera de centraliser et standardiser les domaines
+  -- created_at timestamp
+-- }
+-- La table des domaines sert a definir
+  -- les differents secteurs de services disponible sur la plateforme
+  -- comme electricite, plomberie ou peinture
+-- cela permetera de centraliser et standardiser les domaines
 -- utiliser dans les besoins client, autonomes et entreprises
 
 
